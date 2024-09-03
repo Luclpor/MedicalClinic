@@ -134,3 +134,4 @@ C:\Users\vanya\OneDrive\Рабочий стол\Projects\AspNetPatientDoctors\ob
 C:\Users\vanya\OneDrive\Рабочий стол\Projects\AspNetPatientDoctors\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
 C:\Users\vanya\OneDrive\Рабочий стол\Projects\AspNetPatientDoctors\bin\Debug\net8.0\Newtonsoft.Json.dll
 c:\Users\vanya\OneDrive\Рабочий стол\Projects\AspNetPatientDoctors\bin\Debug\net8.0\System.Linq.Dynamic.Core.dll
+C:\Users\vanya\OneDrive\Рабочий стол\Projects\AspNetPatientDoctors\obj\Debug\net8.0\AspNetPatientDoctors.sourcelink.json
