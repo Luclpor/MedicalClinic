@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using AspNetPatientDoctors.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,9 +7,10 @@ var builder = WebApplication.CreateBuilder(args);
 string connection = builder.Configuration.GetConnectionString("DefaultConnection")!;
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddScoped<IRepository<Doctor>, DoctorRepository>();
+builder.Services.AddTransient<IRepository<Doctor>, DoctorRepository>();
 builder.Services.AddScoped<IRepository<Patient>, PatientsRepository>();
 builder.Services.AddDbContext<MedicalClinicContext>(options => options.UseSqlServer(connection));
+
 
 var app = builder.Build();
 

@@ -4,8 +4,8 @@ using AspNetPatientDoctors.Models;
 public interface IRepository<T>
 {
     object this[int id] {get;}
-    object AddElement(T el,HttpResponse response);
-    object UpdateElement(T el,HttpResponse response);
-    void DeleteElement(int id,HttpResponse response);
+    Task<object> AddElementAsync(T el,HttpResponse response);
+    Task<object> UpdateElementAsync(T el,HttpResponse response);
+    Task DeleteElementAsync(int id,HttpResponse response);
     IEnumerable<object> Sort(string sortField, int page, int rows);
 }

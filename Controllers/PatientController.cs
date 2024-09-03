@@ -35,12 +35,12 @@ public class PatientController : Controller
 
 
     [HttpPost]
-    public IActionResult Post([FromBody] Patient patient)
+    public async Task<IActionResult> Post([FromBody] Patient patient)
     {
         if (ModelState.IsValid)
         {
             var response = HttpContext.Response;
-            var p = repository.AddElement(patient, response);
+            var p = await repository.AddElementAsync(patient, response);
             if (response.StatusCode == StatusCodes.Status200OK)
             {
                 return Ok(p);
@@ -59,10 +59,10 @@ public class PatientController : Controller
     }
 
     [HttpPut]
-    public IActionResult Put([FromBody] Patient patient)
+    public async Task<IActionResult> Put([FromBody] Patient patient)
     {
         var response = HttpContext.Response;
-        var p = repository.UpdateElement(patient, response);
+        var p = await repository.UpdateElementAsync(patient, response);
         if (response.StatusCode == StatusCodes.Status200OK)
         {
            return  Ok(p);
@@ -79,12 +79,12 @@ public class PatientController : Controller
     }
 
     [HttpDelete("{id}")]
-    public IActionResult Delete(int id)
+    public async Task<IActionResult> Delete(int id)
     {
         if (id != null)
         {
             var response = HttpContext.Response;
-            repository.DeleteElement(id, response);
+            await repository.DeleteElementAsync(id, response);
             if (response.StatusCode == StatusCodes.Status200OK)
             {
                 return new ContentResult

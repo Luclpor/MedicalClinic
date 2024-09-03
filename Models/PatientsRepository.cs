@@ -6,8 +6,7 @@ using Microsoft.EntityFrameworkCore;
 namespace AspNetPatientDoctors.Models;
 public class PatientsRepository : IRepository<Patient>
 {
-    private Dictionary<int, Doctor> items;
-    MedicalClinicContext db;
+    MedicalClinicContext db; 
     public PatientsRepository(MedicalClinicContext db)
     {
         this.db = db;
@@ -25,7 +24,7 @@ public class PatientsRepository : IRepository<Patient>
     });
 
 
-    public object AddElement(Patient p, HttpResponse response)
+    public async Task<object> AddElementAsync(Patient p, HttpResponse response)
     {
         if (p.PatientId == 0)
         {
@@ -35,7 +34,7 @@ public class PatientsRepository : IRepository<Patient>
                 return p;
             }
             db.Patients.Add(p);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
             response.StatusCode = StatusCodes.Status200OK;
             return new
             {
@@ -57,7 +56,7 @@ public class PatientsRepository : IRepository<Patient>
                 return p;
             }
             db.Patients.Update(p);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
             response.StatusCode = StatusCodes.Status200OK;
             return new
             {
@@ -73,14 +72,14 @@ public class PatientsRepository : IRepository<Patient>
         }
     }
 
-    public void DeleteElement(int id, HttpResponse response)
+    public async Task DeleteElementAsync(int id, HttpResponse response)
     {
         bool exists = db.Patients.Any(p => p.PatientId == id);
         if (exists)
         {
             Patient patient = new Patient { PatientId = id };
             db.Entry(patient).State = EntityState.Deleted;
-            db.SaveChanges();
+            await db.SaveChangesAsync();
             response.StatusCode = StatusCodes.Status200OK;
             return;
         }
@@ -88,9 +87,9 @@ public class PatientsRepository : IRepository<Patient>
         return;
     }
 
-    public Object UpdateElement(Patient p,HttpResponse response)
+    public async Task<object> UpdateElementAsync(Patient p,HttpResponse response)
     {
-        return AddElement(p, response);
+        return await AddElementAsync(p, response);
     }
 
     public IEnumerable<Object> Sort(string sortField, int page, int rows)
@@ -109,4 +108,8 @@ public class PatientsRepository : IRepository<Patient>
         });
     }
 
+    public Task<object> TestAddElement(Doctor d)
+    {
+        throw new NotImplementedException();
+    }
 }

@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 namespace AspNetPatientDoctors.Models;
 public class DoctorRepository : IRepository<Doctor>
 {
-    private Dictionary<int, Doctor> items;
     MedicalClinicContext db;
     public DoctorRepository(MedicalClinicContext db)
     {
@@ -23,8 +22,11 @@ public class DoctorRepository : IRepository<Doctor>
         SpecializationId = d.SpecializationId
     });
 
-
-    public object AddElement(Doctor el, HttpResponse response)
+    public async Task<object> TestAddElement(Doctor d)
+    {
+        return await db.SaveChangesAsync();
+    }
+    public async Task<object> AddElementAsync(Doctor el, HttpResponse response)
     {
         if (el.DoctorId == 0)
         {
@@ -33,8 +35,8 @@ public class DoctorRepository : IRepository<Doctor>
                 response.StatusCode = StatusCodes.Status404NotFound;
                 return el;
             }
-            db.Doctors.Add(el);
-            db.SaveChanges();
+            await db.Doctors.AddAsync(el);
+            await db.SaveChangesAsync();
             response.StatusCode = StatusCodes.Status200OK;
             return new
             {
@@ -55,7 +57,7 @@ public class DoctorRepository : IRepository<Doctor>
                 return el;
             }
             db.Doctors.Update(el);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
             response.StatusCode = StatusCodes.Status200OK;
             return new
             {
@@ -70,14 +72,14 @@ public class DoctorRepository : IRepository<Doctor>
         }
     }
 
-    public void DeleteElement(int id, HttpResponse response)
+    public async Task DeleteElementAsync(int id, HttpResponse response)
     {
         bool exists = db.Doctors.Any(d => d.DoctorId == id);
         if (exists)
         {
             Doctor doctor = new Doctor { DoctorId = id };
             db.Entry(doctor).State = EntityState.Deleted;
-            db.SaveChanges();
+            await db.SaveChangesAsync();
             response.StatusCode = StatusCodes.Status200OK;
             return;
         }
@@ -85,9 +87,9 @@ public class DoctorRepository : IRepository<Doctor>
         return;
     }
 
-    public Object UpdateElement(Doctor el, HttpResponse response)
+    public async Task<object> UpdateElementAsync(Doctor el, HttpResponse response)
     {
-        return AddElement(el,response);
+        return await AddElementAsync(el,response);
     }
 
     public IEnumerable<Object> Sort(string sortField, int page, int rows)
